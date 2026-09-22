@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Bruno Speed Start</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Fira+Mono:wght@400;500&display=swap">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f8f8f8;
+      --bg-tertiary: #f0f0f0;
+      --text: #1a1a1a;
+      --text-secondary: #666666;
+      --border: #e0e0e0;
+      --accent: #ff6b35;
+      --accent-light: #ffe8da;
+      --success: #2ecc71;
+      --warning: #f39c12;
+      --code-bg: #f5f5f5;
+      --code-text: #d73a49;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #1a1a1a;
+        --bg-secondary: #2a2a2a;
+        --bg-tertiary: #3a3a3a;
+        --text: #ffffff;
+        --text-secondary: #cccccc;
+        --border: #404040;
+        --accent: #ff8652;
+        --accent-light: #4a2a1a;
+        --code-bg: #2a2a2a;
+        --code-text: #ff9999;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #1a1a1a;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #3a3a3a;
+      --text: #ffffff;
+      --text-secondary: #cccccc;
+      --border: #404040;
+      --accent: #ff8652;
+      --accent-light: #4a2a1a;
+      --code-bg: #2a2a2a;
+      --code-text: #ff9999;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Fira Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: env(safe-area-inset-top, 0px) 16px env(safe-area-inset-bottom, 0px) 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 2rem 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1rem;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .card p {
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .highlight {
+      background: var(--accent-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .code-block code {
+      font-family: 'Fira Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--code-text);
+      display: block;
+      white-space: pre;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .copy-btn:hover {
+      opacity: 0.8;
+    }
+
+    .copy-btn.copied {
+      background: var(--success);
+    }
+
+    .change-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      align-items: start;
+    }
+
+    .change-item > div {
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+    }
+
+    .change-item h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .change-item p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .tabs {
+        gap: 0.5rem;
+      }
+
+      .tab-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .change-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist input {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .checklist label {
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .shortcut {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .shortcut kbd {
+      background: var(--accent);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 3px;
+      font-family: 'Fira Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    .tip-box {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .tip-box strong {
+      color: var(--accent);
+    }
+
+    .error-box {
+      background: #ffe0e0;
+      border-left: 4px solid #ff4444;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+      color: #333;
+    }
+
+    .error-box strong {
+      color: #d41111;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-secondary);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-card .label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 Bruno Speed Start</h1>
+      <p class="subtitle">Guia prático para iniciantes: ganhe tempo na migração do Insomnia</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(event, 'mudancas')">📍 Top 5 Mudanças</button>
+      <button class="tab-btn" onclick="switchTab(event, 'setup')">⚙️ Setup 1º Dia</button>
+      <button class="tab-btn" onclick="switchTab(event, 'snippets')">📋 Snippets</button>
+      <button class="tab-btn" onclick="switchTab(event, 'atalhos')">⌨️ Produtividade</button>
+      <button class="tab-btn" onclick="switchTab(event, 'problemas')">🔧 Troubleshooting</button>
+    </div>
+
+    <!-- TAB 1: TOP 5 MUDANÇAS -->
+    <div id="mudancas" class="tab-content active">
+      <div class="grid-2">
+        <div class="stat-card">
+          <div class="number">5</div>
+          <div class="label">Coisas que você PRECISA saber</div>
+        </div>
+        <div class="stat-card">
+          <div class="number">~5min</div>
+          <div class="label">Tempo para aprender</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>1. Variáveis: Insomnia vs Bruno</h3>
+        <div class="change-item">
+          <div>
+            <h4>❌ Insomnia (antigo)</h4>
+            <p><code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">{{ var }}</code></p>
+            <p><code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">pm.setNextRequest()</code></p>
+          </div>
+          <div>
+            <h4>✅ Bruno (novo)</h4>
+            <p><code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">{{ var }}</code> (igual!)</p>
+            <p><code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">bru.setNextRequest()</code></p>
+          </div>
+        </div>
+        <div class="tip-box">
+          <strong>💡 Dica:</strong> A sintaxe das variáveis é idêntica. Mude apenas <code style="background: transparent; padding: 0;">pm.</code> para <code style="background: transparent; padding: 0;">bru.</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>2. Scripts: Pre-request e Tests</h3>
+        <div class="change-item">
+          <div>
+            <h4>❌ Insomnia</h4>
+            <p>Settings → Script (centralizados)</p>
+          </div>
+          <div>
+            <h4>✅ Bruno</h4>
+            <p>Abas do request: "Pre-request" e "Test" (separadas)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>3. Armazenamento: JSON vs .bru</h3>
+        <div class="change-item">
+          <div>
+            <h4>❌ Insomnia</h4>
+            <p>Tudo em JSON (arquivo único)</p>
+          </div>
+          <div>
+            <h4>✅ Bruno</h4>
+            <p>Arquivos .bru (um por request) - Git-friendly!</p>
+          </div>
+        </div>
+        <div class="tip-box">
+          <strong>💡 Ganho:</strong> Diffs mais legíveis no Git, melhor para trabalho em equipe
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>4. Organização: Folders + Collections</h3>
+        <div class="change-item">
+          <div>
+            <h4>❌ Insomnia</h4>
+            <p>Folders (uma hierarquia)</p>
+          </div>
+          <div>
+            <h4>✅ Bruno</h4>
+            <p>Folders + Collections + Workspaces (mais flexível)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>5. Autenticação: Token Caching</h3>
+        <p>Ambos suportam, mas em Bruno é mais eficiente:</p>
+        <div class="tip-box">
+          <strong>💡 Importante:</strong> Sempre cache tokens STS antes de fazer requests. Economiza tempo e respeita rate limits.
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: SETUP 1º DIA -->
+    <div id="setup" class="tab-content">
+      <div class="card">
+        <h3>✅ Checklist: O Mínimo para Começar</h3>
+        <ul class="checklist">
+          <li><input type="checkbox"> <label>1. Criar arquivo <strong>.env</strong> com variáveis globais (host, sts_url, client_id, etc)</label></li>
+          <li><input type="checkbox"> <label>2. Criar pasta <strong>Auth</strong> com request STS-Token (com pre-request para cache)</label></li>
+          <li><input type="checkbox"> <label>3. Criar pasta <strong>Pagamentos</strong> (domínios: Tributos, Pix, DDA)</label></li>
+          <li><input type="checkbox"> <label>4. No header do request, usar: <code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">Authorization: Bearer {{ access_token }}</code></label></li>
+          <li><input type="checkbox"> <label>5. Criar request de teste simples (ex: GET /health)</label></li>
+          <li><input type="checkbox"> <label>6. <strong>Salvar collection no Git</strong> (sincronize a pasta bruno/)</label></li>
+        </ul>
+        <div class="tip-box">
+          <strong>⏱️ Tempo:</strong> ~15 minutos para setup completo
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>.env: Exemplo Pronto</h3>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code># Development
+host=http://localhost:8080
+sts_url=https://sts.sandbox.local
+sts_client_id=seu-client-id
+sts_client_secret=seu-client-secret
+gateway_url=http://localhost:9090
+bff_timeout=30000
+
+# Staging
+# host_staging=https://staging.api.local</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Estrutura de Folders Recomendada</h3>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code>meu-bff-collection/
+├── .env
+├── Auth/
+│   ├── STS-Token
+│   └── Refresh-Token
+├── Pagamentos/
+│   ├── Tributos/
+│   │   ├── Consultar
+│   │   ├── Pagar
+│   │   └── Cancelar
+│   ├── Pix/
+│   │   └── Enviar-Dinheiro
+│   └── DDA/
+│       └── Listar-Débitos
+└── Utils/
+    └── Health-Check</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: SNIPPETS -->
+    <div id="snippets" class="tab-content">
+      <div class="card">
+        <h3>📋 Snippet 1: STS Token com Cache</h3>
+        <p><strong>Onde usar:</strong> Pre-request do request "STS-Token"</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code>const cachedToken = bru.getEnvVar('access_token');
+const tokenExpiry = bru.getEnvVar('token_expiry');
+const now = Date.now();
+
+if (cachedToken && tokenExpiry && now < tokenExpiry) {
+  console.log('✅ Token válido em cache');
+  bru.setNextRequest('Primeira-Chamada-Autenticada');
+} else {
+  console.log('🔄 Obtendo novo token...');
+}</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Snippet 2: Armazenar Token + Expiração</h3>
+        <p><strong>Onde usar:</strong> Test (pós-resposta) do request "STS-Token"</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code>const res = res.getBody();
+const token = res.access_token;
+const expiresIn = res.expires_in || 3600;
+
+bru.setEnvVar('access_token', token);
+bru.setEnvVar('token_expiry', Date.now() + (expiresIn * 1000) - 60000);
+
+tests['Token OK'] = typeof token === 'string' && token.length > 0;
+tests['Status 200'] = res.getStatus() === 200;</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Snippet 3: Encadear Requests</h3>
+        <p><strong>Onde usar:</strong> Test (pós-resposta) para pular para próximo request</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code>const body = res.getBody();
+
+if (res.getStatus() === 200 && body.status === 'PENDENTE') {
+  bru.setEnvVar('tributacao_id', body.id);
+  bru.setNextRequest('Validar-Tributo');
+} else {
+  console.error('❌ Status inválido');
+  bru.runner.stopExecution();
+}</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Snippet 4: Headers Padrão com Variáveis</h3>
+        <p><strong>Onde usar:</strong> Headers de qualquer request autenticado</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code>Authorization: Bearer {{ access_token }}
+Content-Type: application/json
+X-Request-ID: {{ $randomUUID }}
+X-Timestamp: {{ $timestamp }}
+X-Client-Id: {{ sts_client_id }}</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Snippet 5: Assertions Rápidas</h3>
+        <p><strong>Onde usar:</strong> Test (pós-resposta) para validar respostas</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code>tests['Status 200'] = res.getStatus() === 200;
+tests['Tem body'] = res.getBody() !== null;
+tests['Tempo < 1s'] = res.getResponseTime() < 1000;
+tests['Tem ID'] = res.getBody().id !== null;
+
+const body = res.getBody();
+console.log('Response:', JSON.stringify(body, null, 2));</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: ATALHOS E PRODUTIVIDADE -->
+    <div id="atalhos" class="tab-content">
+      <div class="card">
+        <h3>⌨️ Variáveis Dinâmicas (Ganhe Tempo!)</h3>
+        <p>Use diretamente na URL, Body ou Headers:</p>
+        <div class="shortcut">
+          <span>ID aleatório</span>
+          <kbd>{{ $randomUUID }}</kbd>
+        </div>
+        <div class="shortcut">
+          <span>Número aleatório</span>
+          <kbd>{{ $randomInt }}</kbd>
+        </div>
+        <div class="shortcut">
+          <span>Timestamp ISO</span>
+          <kbd>{{ $isoTimestamp }}</kbd>
+        </div>
+        <div class="shortcut">
+          <span>Timestamp Unix</span>
+          <kbd>{{ $timestamp }}</kbd>
+        </div>
+        <div class="shortcut">
+          <span>Hora atual (YYYY-MM-DD)</span>
+          <kbd>{{ $date }}</kbd>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🚀 Fluxo de Produtividade</h3>
+        <div class="shortcut">
+          <span>1. Setup STS Token</span>
+          <kbd>F5 ou Play</kbd>
+        </div>
+        <div class="shortcut">
+          <span>2. Usar Collection Runner</span>
+          <kbd>Ctrl + Shift + E</kbd>
+        </div>
+        <div class="shortcut">
+          <span>3. Exportar como cURL</span>
+          <kbd>Clique direito → Copy as cURL</kbd>
+        </div>
+        <div class="shortcut">
+          <span>4. Comparar respostas</span>
+          <kbd>Aba Response → Compare</kbd>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💡 Dicas de Ouro para Ganhar Tempo</h3>
+        <div class="tip-box">
+          <strong>1. Use Folder Variables:</strong> Configure timeouts, retry_max e base_path uma vez por pasta
+        </div>
+        <div class="tip-box">
+          <strong>2. Collection Runner:</strong> Execute múltiplos requests com dados diferentes (CSV/JSON)
+        </div>
+        <div class="tip-box">
+          <strong>3. Environment Switcher:</strong> Alterne entre dev/staging/prod com um clique
+        </div>
+        <div class="tip-box">
+          <strong>4. Duplicate Request:</strong> Crie variações rápido (Ctrl + D ou botão direito)
+        </div>
+        <div class="tip-box">
+          <strong>5. Pre-request Global:</strong> Coloque lógica comum para todos os requests
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: TROUBLESHOOTING -->
+    <div id="problemas" class="tab-content">
+      <div class="card">
+        <h3>❌ "Token não está sendo usado"</h3>
+        <div class="error-box">
+          <strong>Problema:</strong> Header Authorization está vazio
+        </div>
+        <p><strong>Solução:</strong> Verifique se:</p>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>1. Executou o STS-Token primeiro (para popular access_token)</li>
+          <li>2. Header usa <code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">{{ access_token }}</code> (com chaves)</li>
+          <li>3. Token não expirou (<code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">bru.getEnvVar('token_expiry')</code> > agora)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>❌ "bru is not defined"</h3>
+        <div class="error-box">
+          <strong>Problema:</strong> Script não está na aba correta
+        </div>
+        <p><strong>Solução:</strong> O código do <code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">bru.</code> DEVE estar em:</p>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>✅ Aba <strong>Pre-request</strong> (antes do request)</li>
+          <li>✅ Aba <strong>Test</strong> (após a resposta)</li>
+          <li>❌ Em nenhum outro lugar</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>❌ "Request não encadeia para o próximo"</h3>
+        <div class="error-box">
+          <strong>Problema:</strong> <code style="background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 3px;">bru.setNextRequest()</code> não funciona
+        </div>
+        <p><strong>Solução:</strong> Verifique:</p>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>1. O nome da próxima request está <strong>exatamente igual</strong> (case-sensitive)</li>
+          <li>2. Você está executando com <strong>Collection Runner</strong> (Play button)</li>
+          <li>3. Não está com erro na resposta anterior</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>❌ "Salvo no Insomnia, mas não está em Bruno"</h3>
+        <div class="error-box">
+          <strong>Problema:</strong> Collection não sincronizou
+        </div>
+        <p><strong>Solução:</strong></p>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>1. Exporte do Insomnia (Ctrl + Shift + E → Export)</li>
+          <li>2. Abra Bruno e importe (File → Import)</li>
+          <li>3. Ou: Delete a collection local e puxe do Git</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>❌ "Variáveis de pasta não aparecem"</h3>
+        <div class="error-box">
+          <strong>Problema:</strong> Folder variables não são herdadas automaticamente
+        </div>
+        <p><strong>Solução:</strong> Em Bruno (v4.1+), use:</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <code>bru.getFolderVar('nome_variavel')  // Ler
+bru.setFolderVar('nome_variavel', valor)  // Escrever</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+    <span id="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    // Tab switching
+    function switchTab(e, tabName) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      document.getElementById(tabName).classList.add('active');
+      e.target.classList.add('active');
+
+      localStorage.setItem('activeTab', tabName);
+    }
+
+    // Restore active tab
+    window.addEventListener('load', () => {
+      const savedTab = localStorage.getItem('activeTab') || 'mudancas';
+      document.querySelector(`button[onclick*="'${savedTab}'"]`)?.click();
+    });
+
+    // Copy code
+    function copyCode(btn) {
+      const code = btn.nextElementSibling.textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = '✓ Copiado!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copiar';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      const root = document.documentElement;
+      const currentTheme = root.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      root.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+
+      const icon = document.getElementById('theme-icon');
+      icon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Restore theme
+    window.addEventListener('load', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      }
+    });
+
+    // Checklist persistence
+    document.querySelectorAll('.checklist input').forEach(input => {
+      input.addEventListener('change', () => {
+        const checkboxData = Array.from(document.querySelectorAll('.checklist input')).map(cb => cb.checked);
+        localStorage.setItem('checklist', JSON.stringify(checkboxData));
+      });
+    });
+
+    window.addEventListener('load', () => {
+      const saved = JSON.parse(localStorage.getItem('checklist') || '[]');
+      document.querySelectorAll('.checklist input').forEach((input, idx) => {
+        input.checked = saved[idx] || false;
+      });
+    });
+  </script>
+</body>
+</html>

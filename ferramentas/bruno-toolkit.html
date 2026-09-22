@@ -1,0 +1,1043 @@
+<title>Bruno Toolkit</title>
+
+<style>
+:root {
+  --bg-primary: #F8F9FA;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F0F3F7;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
+  --border: #E5E7EB;
+  --accent: #0066CC;
+  --accent-light: #E8F1FF;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-primary: #0F1419;
+    --bg-secondary: #1A1F2E;
+    --bg-tertiary: #252D3D;
+    --text-primary: #E5E7EB;
+    --text-secondary: #D1D5DB;
+    --text-tertiary: #9CA3AF;
+    --border: #374151;
+    --accent-light: #0A2847;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #0F1419;
+  --bg-secondary: #1A1F2E;
+  --bg-tertiary: #252D3D;
+  --text-primary: #E5E7EB;
+  --text-secondary: #D1D5DB;
+  --text-tertiary: #9CA3AF;
+  --border: #374151;
+  --accent-light: #0A2847;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.header-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+button {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--accent);
+}
+
+button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+button.primary:hover {
+  opacity: 0.9;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+
+.nav-tab {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.nav-tab:hover {
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--accent);
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.code-block {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-primary);
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-label {
+  flex: 1;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.checkbox-group.completed .checkbox-label {
+  text-decoration: line-through;
+  color: var(--text-tertiary);
+}
+
+.flow-diagram {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.flow-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 0 8px;
+}
+
+.flow-arrow {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: bold;
+  margin: 0 8px;
+}
+
+.copy-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.success-msg {
+  background: #D1FAE5;
+  color: #065F46;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 8px;
+  display: none;
+}
+
+.success-msg.show {
+  display: block;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.badge-info {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.badge-success {
+  background: #D1FAE5;
+  color: var(--success);
+}
+
+.badge-warning {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  text-align: left;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+tr:hover {
+  background: var(--bg-tertiary);
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .nav-tabs {
+    flex-wrap: wrap;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<header>
+  <div>
+    <h1>🚀 Bruno Toolkit</h1>
+    <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 14px;">Seu companion para migração Insomnia → Bruno</p>
+  </div>
+  <div class="header-right">
+    <button onclick="clearData()">🗑️ Limpar</button>
+    <button class="primary" onclick="exportData()">📥 Exportar</button>
+  </div>
+</header>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="switchTab(event, 'referencia')">📚 Referência</button>
+  <button class="nav-tab" onclick="switchTab(event, 'gerador')">⚙️ Gerador de Scripts</button>
+  <button class="nav-tab" onclick="switchTab(event, 'variaveis')">📦 Variáveis</button>
+  <button class="nav-tab" onclick="switchTab(event, 'checklist')">✅ Checklist</button>
+  <button class="nav-tab" onclick="switchTab(event, 'fluxos')">🔗 Fluxos</button>
+  <button class="nav-tab" onclick="switchTab(event, 'docs')">📖 Documentação</button>
+</div>
+
+<!-- REFERÊNCIA RÁPIDA -->
+<div id="referencia" class="tab-content active">
+  <div class="section">
+    <h2 class="section-title">APIs Bruno - Referência Rápida</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h3 class="card-title">🔑 Variáveis</h3>
+        <div class="code-block">bru.getEnvVar('chave')
+bru.setEnvVar('chave', 'valor')
+bru.removeEnvVar('chave')
+bru.getFolderVar('chave')
+bru.setFolderVar('chave', 'valor')</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">📡 Request/Response</h3>
+        <div class="code-block">res.getStatus()
+res.getBody()
+res.getHeader('name')
+res.getResponseTime()
+res.getSize()</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">🔄 Fluxo</h3>
+        <div class="code-block">bru.setNextRequest('NomeDaProxima')
+bru.runner.skipRequest()
+bru.runner.stopExecution()
+bru.sendRequest(requestObj)
+bru.runRequest('NomeRequest')</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">🧪 Testes</h3>
+        <div class="code-block">tests['Nome'] = condição
+res.getBody()
+res.getStatus()
+res.getResponseTime()
+onFail(err => { })</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">📝 Log</h3>
+        <div class="code-block">console.log('mensagem')
+console.warn('aviso')
+console.error('erro')</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">⏱️ Variáveis Dinâmicas</h3>
+        <div class="code-block">{{ $randomInt }}
+{{ $randomUUID }}
+{{ $timestamp }}
+{{ $isoTimestamp }}</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Padrões Comuns</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h3 class="card-title">✨ Cache de Token</h3>
+        <div class="code-block">const cached = bru.getEnvVar('access_token')
+const expiry = bru.getEnvVar('token_expiry')
+
+if (cached && Date.now() < expiry) {
+  bru.setNextRequest('Proxima')
+}</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">🔐 STS Token (Pre-request)</h3>
+        <div class="code-block">const token = bru.getEnvVar('access_token')
+const expiry = bru.getEnvVar('token_expiry')
+
+if (token && Date.now() < expiry) {
+  console.log('Token em cache')
+  bru.setNextRequest('Pular-STS')
+}</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">✅ Validação (Test)</h3>
+        <div class="code-block">tests['Status OK'] = res.getStatus() === 200
+tests['Tem body'] = res.getBody() !== null
+tests['Tempo < 1s'] = res.getResponseTime() < 1000
+
+if (res.getStatus() === 200) {
+  bru.setEnvVar('id', res.getBody().id)
+  bru.setNextRequest('Proxima')
+}</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GERADOR DE SCRIPTS -->
+<div id="gerador" class="tab-content">
+  <div class="section">
+    <h2 class="section-title">Gerador de Scripts</h2>
+
+    <div class="card">
+      <div class="form-group">
+        <label>Tipo de Script</label>
+        <select id="scriptType" onchange="updateScriptPreview()">
+          <option value="prereq">Pré-request</option>
+          <option value="test">Test/Pós-resposta</option>
+          <option value="folder">Folder-level Pre-request</option>
+          <option value="cache">Cache de Token</option>
+          <option value="flow">Fluxo Encadeado</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="varNameGroup">
+        <label>Nome da Variável</label>
+        <input type="text" id="varName" placeholder="ex: access_token" onchange="updateScriptPreview()">
+      </div>
+
+      <div class="form-group" id="varValueGroup">
+        <label>Caminho do Valor (JSON Path)</label>
+        <input type="text" id="varValue" placeholder="ex: response.data.token" onchange="updateScriptPreview()">
+      </div>
+
+      <div class="form-group" id="nextRequestGroup" style="display: none;">
+        <label>Próximo Request (setNextRequest)</label>
+        <input type="text" id="nextRequest" placeholder="ex: Validar-Tributo" onchange="updateScriptPreview()">
+      </div>
+
+      <div class="form-group" id="conditionGroup" style="display: none;">
+        <label>Condição (opcional)</label>
+        <input type="text" id="condition" placeholder="ex: res.getStatus() === 200" onchange="updateScriptPreview()">
+      </div>
+
+      <div>
+        <label>Preview do Script Gerado:</label>
+        <textarea id="scriptPreview" readonly style="font-family: 'Fira Code', monospace;"></textarea>
+        <button class="copy-btn primary" onclick="copyCode(document.getElementById('scriptPreview'))">📋 Copiar Script</button>
+        <div class="success-msg" id="successMsg">✅ Copiado!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ORGANIZADOR DE VARIÁVEIS -->
+<div id="variaveis" class="tab-content">
+  <div class="section">
+    <h2 class="section-title">Organizador de Variáveis</h2>
+
+    <div class="card">
+      <div class="form-group">
+        <label>Adicionar Variável</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 100px; gap: 8px;">
+          <input type="text" id="newVarName" placeholder="Nome">
+          <input type="text" id="newVarValue" placeholder="Valor">
+          <select id="newVarScope">
+            <option>Environment</option>
+            <option>Collection</option>
+            <option>Folder</option>
+            <option>Global</option>
+          </select>
+          <button class="primary" onclick="addVariable()">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Valor</th>
+              <th>Scope</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="variablesTable">
+            <tr style="text-align: center; color: var(--text-tertiary);">
+              <td colspan="4">Nenhuma variável ainda</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Exemplos de .env</h2>
+      <div class="card">
+        <div class="code-block">host=http://localhost:8080
+sts_url=https://sts.sandbox.local
+sts_client_id=seu-client-id
+sts_client_secret=seu-client-secret
+gateway_url=http://localhost:9090
+bff_timeout=30000</div>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
+<div id="checklist" class="tab-content">
+  <div class="section">
+    <h2 class="section-title">Checklist de Migração</h2>
+
+    <div id="checklistItems">
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Criar `.env` com variáveis globais</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Importar collection do Insomnia</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Testar request STS (validar caching)</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Criar Folder-level variables para cada domínio</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Implementar chamadas encadeadas com `bru.setNextRequest()`</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Criar Setup-Environment request</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Criar Load-Test-Data request</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Criar Cleanup-Test-Data request</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Validar Collection Runner com paralelização</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Testar com diferentes environments (dev, staging, prod)</span>
+      </label>
+
+      <label class="checkbox-group" onclick="toggleCheckbox(this)">
+        <input type="checkbox">
+        <span class="checkbox-label">Documentar em Docs tab de cada folder</span>
+      </label>
+    </div>
+
+    <div style="margin-top: 24px;">
+      <div id="progress" style="display: none;">
+        <div style="font-size: 14px; margin-bottom: 8px;">
+          Progresso: <strong id="progressText">0/11</strong>
+        </div>
+        <div style="width: 100%; height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden;">
+          <div id="progressBar" style="height: 100%; background: var(--success); width: 0%; transition: width 0.2s;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONSTRUTOR DE FLUXOS -->
+<div id="fluxos" class="tab-content">
+  <div class="section">
+    <h2 class="section-title">Construtor de Fluxos</h2>
+
+    <div class="card">
+      <div class="form-group">
+        <label>Criar Fluxo de Encadeamento</label>
+        <div style="display: grid; gap: 8px;">
+          <input type="text" id="flowStep1" placeholder="1º Step (ex: STS-Token)" value="STS-Token">
+          <input type="text" id="flowStep2" placeholder="2º Step (ex: Validar-Tributo)" value="Validar-Tributo">
+          <input type="text" id="flowStep3" placeholder="3º Step (ex: Pagar-Tributo)" value="Pagar-Tributo">
+          <button class="primary" onclick="generateFlow()">Gerar Fluxo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Visualização do Fluxo</h2>
+      <div class="flow-diagram" id="flowDiagram">
+        <div style="text-align: center; color: var(--text-tertiary);">
+          Adicione steps acima para visualizar o fluxo
+        </div>
+      </div>
+
+      <div class="card" id="flowCodeCard" style="display: none;">
+        <h3 class="card-title">Código Gerado</h3>
+        <div class="code-block" id="flowCode"></div>
+        <button class="copy-btn primary" onclick="copyCode(document.getElementById('flowCode'))">📋 Copiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOCUMENTAÇÃO -->
+<div id="docs" class="tab-content">
+  <div class="section">
+    <h2 class="section-title">Documentação Visual</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h3 class="card-title">📁 Estrutura Recomendada</h3>
+        <p class="card-desc">Organize suas collections em:</p>
+        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin-top: 12px;">
+          <strong>Auth</strong> - STS-Token, Refresh-Token<br>
+          <strong>Pagamentos</strong> - Tributos, Pix, DDA<br>
+          <strong>Orquestração</strong> - Setup, Load, Cleanup<br>
+          <strong>Utils</strong> - Health, Version
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">🔐 Scopes de Variáveis</h3>
+        <p class="card-desc">Escolha o escopo certo:</p>
+        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin-top: 12px;">
+          <strong>Global</strong> - Entre collections<br>
+          <strong>Environment</strong> - Por ambiente<br>
+          <strong>Collection</strong> - Compartilhada<br>
+          <strong>Folder</strong> - Só nessa pasta<br>
+          <strong>Request</strong> - Apenas neste request
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">⏱️ Dinâmicas Úteis</h3>
+        <p class="card-desc">Use nas suas requests:</p>
+        <div class="code-block" style="margin-top: 12px; font-size: 12px;">{{ $randomInt }}
+{{ $randomUUID }}
+{{ $timestamp }}
+{{ $isoTimestamp }}</div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">🚀 Dica de Performance</h3>
+        <p class="card-desc">Para paralelizar testes:</p>
+        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin-top: 12px;">
+          1. Abra Collection Runner<br>
+          2. Marque "Parallel"<br>
+          3. Defina iterações via CSV<br>
+          4. Use "Delay" se houver rate limit
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">🔗 Recursos Úteis</h3>
+        <p class="card-desc">Documentação oficial:</p>
+        <div style="font-size: 13px; margin-top: 12px;">
+          <a href="https://docs.usebruno.com/" style="color: var(--accent); text-decoration: none;">📖 Docs Bruno</a><br>
+          <a href="https://github.com/usebruno/bruno" style="color: var(--accent); text-decoration: none;">🐙 GitHub</a><br>
+          <a href="https://discord.gg/usebruno" style="color: var(--accent); text-decoration: none;">💬 Discord</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">✨ Stack do seu BFF</h3>
+        <p class="card-desc">Tecnologias integradas:</p>
+        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 12px;">
+          <span class="badge badge-info">Java</span>
+          <span class="badge badge-info">Spring Boot</span>
+          <span class="badge badge-info">Feign</span><br>
+          <span class="badge badge-info">Docker</span>
+          <span class="badge badge-info">Git</span>
+          <span class="badge badge-info">IntelliJ</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(e, tabName) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabName).classList.add('active');
+  e.target.classList.add('active');
+  localStorage.setItem('activeTab', tabName);
+}
+
+function copyCode(el) {
+  const text = el.textContent || el.value;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.nextElementSibling;
+    if (btn && btn.classList.contains('copy-btn')) {
+      btn.textContent = '✅ Copiado!';
+      setTimeout(() => btn.textContent = '📋 Copiar', 2000);
+    } else if (el.classList.contains('copy-btn')) {
+      el.textContent = '✅ Copiado!';
+      setTimeout(() => el.textContent = '📋 Copiar', 2000);
+    }
+  });
+}
+
+function updateScriptPreview() {
+  const type = document.getElementById('scriptType').value;
+  const varName = document.getElementById('varName').value || 'variavel';
+  const varValue = document.getElementById('varValue').value || 'response.data.value';
+  const nextReq = document.getElementById('nextRequest').value || 'ProximoRequest';
+  const condition = document.getElementById('condition').value || 'res.getStatus() === 200';
+
+  document.getElementById('varNameGroup').style.display = 'block';
+  document.getElementById('varValueGroup').style.display = 'block';
+  document.getElementById('nextRequestGroup').style.display = 'none';
+  document.getElementById('conditionGroup').style.display = 'none';
+
+  let code = '';
+
+  if (type === 'prereq') {
+    code = `// Pré-request - Executado antes da requisição\nconst ${varName} = bru.getEnvVar('${varName}');
+console.log('${varName}:', ${varName});`;
+  } else if (type === 'test') {
+    document.getElementById('nextRequestGroup').style.display = 'block';
+    document.getElementById('conditionGroup').style.display = 'block';
+    code = `// Test/Pós-resposta - Executado após receber resposta
+const body = res.getBody();
+const ${varName} = body.${varValue.replace('response.data.', '')};
+
+if (${condition}) {
+  bru.setEnvVar('${varName}', ${varName});
+  console.log('✅ ${varName} armazenado');
+  bru.setNextRequest('${nextReq}');
+} else {
+  console.error('❌ Erro ao processar');
+  bru.runner.stopExecution();
+}`;
+  } else if (type === 'folder') {
+    code = `// Folder-level Pre-request - Executado antes de qualquer request nesta pasta
+console.log('📂 Iniciando fluxo');
+
+const timeout = bru.getFolderVar('api_timeout') || '30000';
+bru.setEnvVar('current_timeout', timeout);`;
+  } else if (type === 'cache') {
+    code = `// Cache inteligente de token
+const token = bru.getEnvVar('access_token');
+const expiry = bru.getEnvVar('token_expiry');
+const now = Date.now();
+
+if (token && expiry && now < expiry) {
+  console.log('⚡ Token em cache - Pulando STS');
+  bru.setNextRequest('Proxima-Requisicao');
+} else {
+  console.log('🔄 Obtendo novo token');
+}`;
+  } else if (type === 'flow') {
+    code = `// Pós-resposta - Encadeamento automático
+const body = res.getBody();
+
+if (res.getStatus() === 200 && body.status === 'PENDENTE') {
+  bru.setEnvVar('item_id', body.id);
+  bru.setEnvVar('item_value', body.valor);
+  bru.setNextRequest('Validar-Item');
+} else {
+  console.error('❌ Item não está no status esperado');
+  bru.runner.stopExecution();
+}`;
+  }
+
+  document.getElementById('scriptPreview').value = code;
+}
+
+function addVariable() {
+  const name = document.getElementById('newVarName').value;
+  const value = document.getElementById('newVarValue').value;
+  const scope = document.getElementById('newVarScope').value;
+
+  if (!name || !value) return;
+
+  let vars = JSON.parse(localStorage.getItem('variables') || '[]');
+  vars.push({ name, value, scope });
+  localStorage.setItem('variables', JSON.stringify(vars));
+
+  document.getElementById('newVarName').value = '';
+  document.getElementById('newVarValue').value = '';
+  renderVariables();
+}
+
+function deleteVariable(idx) {
+  let vars = JSON.parse(localStorage.getItem('variables') || '[]');
+  vars.splice(idx, 1);
+  localStorage.setItem('variables', JSON.stringify(vars));
+  renderVariables();
+}
+
+function renderVariables() {
+  const vars = JSON.parse(localStorage.getItem('variables') || '[]');
+  const table = document.getElementById('variablesTable');
+
+  if (vars.length === 0) {
+    table.innerHTML = '<tr style="text-align: center; color: var(--text-tertiary);"><td colspan="4">Nenhuma variável ainda</td></tr>';
+    return;
+  }
+
+  table.innerHTML = vars.map((v, i) => `
+    <tr>
+      <td><code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px; font-size: 12px;">${v.name}</code></td>
+      <td>${v.value}</td>
+      <td><span class="badge badge-info">${v.scope}</span></td>
+      <td><button onclick="deleteVariable(${i})" style="padding: 4px 8px; font-size: 12px;">❌</button></td>
+    </tr>
+  `).join('');
+}
+
+function toggleCheckbox(el) {
+  const checkbox = el.querySelector('input[type="checkbox"]');
+  checkbox.checked = !checkbox.checked;
+  el.classList.toggle('completed', checkbox.checked);
+  updateProgress();
+  localStorage.setItem('checklist', JSON.stringify(getChecklist()));
+}
+
+function getChecklist() {
+  return Array.from(document.querySelectorAll('#checklistItems input[type="checkbox"]')).map(el => el.checked);
+}
+
+function updateProgress() {
+  const checks = document.querySelectorAll('#checklistItems input[type="checkbox"]');
+  const completed = Array.from(checks).filter(c => c.checked).length;
+  const total = checks.length;
+
+  document.getElementById('progress').style.display = 'block';
+  document.getElementById('progressText').textContent = `${completed}/${total}`;
+  document.getElementById('progressBar').style.width = `${(completed / total) * 100}%`;
+}
+
+function generateFlow() {
+  const step1 = document.getElementById('flowStep1').value || 'Request-1';
+  const step2 = document.getElementById('flowStep2').value || 'Request-2';
+  const step3 = document.getElementById('flowStep3').value || 'Request-3';
+
+  const diagram = document.getElementById('flowDiagram');
+  diagram.innerHTML = `
+    <div style="overflow-x: auto; text-align: center; padding: 20px 0;">
+      <span class="flow-box">${step1}</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-box">${step2}</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-box">${step3}</span>
+    </div>
+  `;
+
+  const flowCode = document.getElementById('flowCode');
+  flowCode.textContent = `// Pré-request de ${step1}
+bru.setNextRequest('${step2}')
+
+// Pré-request de ${step2}
+bru.setNextRequest('${step3}')
+
+// Pré-request de ${step3}
+console.log('✅ Fluxo concluído')`;
+
+  document.getElementById('flowCodeCard').style.display = 'block';
+  localStorage.setItem('flowSteps', JSON.stringify({ step1, step2, step3 }));
+}
+
+function clearData() {
+  if (confirm('Tem certeza que quer limpar tudo?')) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+function exportData() {
+  const data = {
+    variables: JSON.parse(localStorage.getItem('variables') || '[]'),
+    checklist: JSON.parse(localStorage.getItem('checklist') || '[]'),
+    flowSteps: JSON.parse(localStorage.getItem('flowSteps') || '{}'),
+    exportedAt: new Date().toISOString()
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'bruno-toolkit-export.json';
+  a.click();
+}
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', () => {
+  const activeTab = localStorage.getItem('activeTab') || 'referencia';
+  document.getElementById(activeTab).classList.add('active');
+  document.querySelector(`[onclick*="${activeTab}"]`).classList.add('active');
+
+  renderVariables();
+  updateScriptPreview();
+
+  // Restaurar checklist
+  const checklist = JSON.parse(localStorage.getItem('checklist') || '[]');
+  document.querySelectorAll('#checklistItems input[type="checkbox"]').forEach((cb, i) => {
+    cb.checked = checklist[i] || false;
+    cb.parentElement.classList.toggle('completed', cb.checked);
+  });
+  updateProgress();
+
+  // Restaurar flow
+  const flow = JSON.parse(localStorage.getItem('flowSteps') || 'null');
+  if (flow) {
+    document.getElementById('flowStep1').value = flow.step1;
+    document.getElementById('flowStep2').value = flow.step2;
+    document.getElementById('flowStep3').value = flow.step3;
+    generateFlow();
+  }
+});
+</script>
